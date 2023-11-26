@@ -10,14 +10,14 @@ export interface Course {
     CourseNum: string;
 }
 
-enum Quarter {
-    FALL = '92',
-    WINTER = '03',
-    SPRING = '14',
-    SUMMER = '25',
-    SUMMER10WK = '39',
-    SUMMER2 = '76'
-}
+// enum Quarter {
+//     FALL = '92',
+//     WINTER = '03',
+//     SPRING = '14',
+//     SUMMER = '25',
+//     SUMMER10WK = '39',
+//     SUMMER2 = '76'
+// }
 
 // function getRelevantTerms
 
