@@ -1,14 +1,16 @@
 import axios from 'axios';
 import prisma from './prisma';
+import { z } from 'zod';
 
 const WEBSOC_URL = 'https://www.reg.uci.edu/perl/WebSoc';
 
 
+export const course = z.object({
+    Dept: z.string(),
+    CourseNum: z.string()
+});
 
-export interface Course {
-    Dept: string;
-    CourseNum: string;
-}
+export type Course = z.infer<typeof course>;
 
 // enum Quarter {
 //     FALL = '92',
