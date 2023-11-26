@@ -1,5 +1,6 @@
 <script lang="ts">
   import trpc from '$lib/trpc';
+  import { formatTermReadable } from '$lib/websoc.js';
   import type { syllabi } from '@prisma/client';
   import { onMount } from 'svelte';
 
@@ -44,7 +45,7 @@
       <tbody>
         {#each syllabi.terms as term}
           <tr>
-            <td colspan={term.instructors.length}>{term.term}</td>
+            <td colspan={term.instructors.length}>{formatTermReadable(term.term)}</td>
             <td>{term.instructors[0].instructor}</td>
             <td><a href={term.instructors[0].syllabus}>Syllabus</a></td>
           </tr>
