@@ -1,8 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins&display=swap');
 
 :root[data-theme='dark'] {
-    background-color: #242424;
-    --form-element-background-color: #242424;
+    --background: #121212;
+    --overlay1: #1E1E1E;
+    --overlay2: #292929;
+    --overlay3: #363636;
+    --overlay4: #404040;
+    --form-element-background-color: var(--background);
+    --form-element-border-color: var(--overlay2);
+    --table-border-color: var(--overlay2);
+
     --color: #eee;
     --font-family: 'Poppins', sans-serif;
+    background-color: var(--background);
 }

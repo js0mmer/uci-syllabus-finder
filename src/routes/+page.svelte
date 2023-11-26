@@ -27,10 +27,10 @@
   <meta name="description" content="Find syllabi for prior offerings of courses at UCI" />
 </svelte:head>
 
-<main>
-  <h1>hi</h1>
-  <input type="text" name="Dept" placeholder="Search for a course" bind:value={Dept} />
-  <input type="text" name="CourseNum" placeholder="Search for a course" bind:value={CourseNum} />
+<main class="container">
+  <label for="Dept">Search for a course</label>
+  <input type="text" id="Dept" name="Dept" placeholder="Department" bind:value={Dept} />
+  <input type="text" name="CourseNum" placeholder="Course Number" bind:value={CourseNum} />
   <button on:click={search}>Search</button>
   {#if syllabi}
     <table>
@@ -38,7 +38,7 @@
         <tr>
           <th>Term</th>
           <th>Instructor</th>
-          <th>Link</th>
+          <th>Syllabus</th>
         </tr>
       </thead>
       <tbody>
@@ -46,12 +46,12 @@
           <tr>
             <td colspan={term.instructors.length}>{term.term}</td>
             <td>{term.instructors[0].instructor}</td>
-            <td><a href={term.instructors[0].syllabus}>Link</a></td>
+            <td><a href={term.instructors[0].syllabus}>Syllabus</a></td>
           </tr>
           {#each term.instructors.splice(1) as instructor}
             <tr>
               <td>{instructor.instructor}</td>
-              <td><a href={instructor.syllabus}>Link</a></td>
+              <td><a href={instructor.syllabus}>Syllabus</a></td>
             </tr>
           {/each}
         {/each}
@@ -59,3 +59,9 @@
     </table>
   {/if}
 </main>
+
+<style>
+  main {
+    margin-top: 2rem;
+  }
+</style>
