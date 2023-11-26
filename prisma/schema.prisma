@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type SyllabiTerms {
+  instructors SyllabiTermsInstructors[]
+  term        String
+}
+
+type SyllabiTermsInstructors {
+  instructor String
+  syllabus   String
+}
+
+model syllabi {
+  id        String         @id @default(auto()) @map("_id") @db.ObjectId
+  courseNum String
+  dept      String
+  terms     SyllabiTerms[]
+}
