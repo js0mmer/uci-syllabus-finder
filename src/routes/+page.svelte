@@ -45,7 +45,7 @@
       <tbody>
         {#each syllabi.terms as term}
           <tr>
-            <td colspan={term.instructors.length}>{formatTermReadable(term.term)}</td>
+            <td rowspan={term.instructors.length}>{formatTermReadable(term.term)}</td>
             <td>{term.instructors[0].instructor}</td>
             <td><a href={term.instructors[0].syllabus}>Syllabus</a></td>
           </tr>
