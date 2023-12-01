@@ -4,11 +4,12 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "target": "ESNext",
-    "module": "ESNext",
+    "module": "CommonJS",
     "moduleResolution": "Node",
     "preserveWatchOutput": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "strict": true,
-  }
+    "strict": true
+  },
+  "exclude": ["node_modules"]
 }

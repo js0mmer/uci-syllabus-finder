@@ -1,4 +1,4 @@
-import { course, getSyllabi } from '$lib/websoc';
+import { course, getSyllabi } from "websoc";
 import { publicProcedure, router } from '../trpc';
  
 export const appRouter = router({

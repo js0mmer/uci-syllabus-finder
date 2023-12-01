@@ -1,0 +1,42 @@
+{
+	"name": "uci-syllabus-finder",
+	"version": "0.0.1",
+	"scripts": {
+		"postinstall": "prisma generate",
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"lint": "prettier --check **/*.{ts,svelte} && eslint .",
+		"format": "prettier --write **/*.{ts,svelte}"
+	},
+	"devDependencies": {
+		"@jest/globals": "^29.7.0",
+		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/kit": "^1.27.4",
+		"@typescript-eslint/eslint-plugin": "^6.0.0",
+		"@typescript-eslint/parser": "^6.0.0",
+		"eslint": "^8.28.0",
+		"eslint-config-prettier": "^9.0.0",
+		"eslint-plugin-svelte": "^2.30.0",
+		"prettier": "^3.0.0",
+		"prettier-plugin-svelte": "^3.0.0",
+		"prisma": "^5.6.0",
+		"svelte": "^4.2.7",
+		"svelte-check": "^3.6.0",
+		"tslib": "^2.4.1",
+		"typescript": "^5.0.0",
+		"vite": "^4.4.2"
+	},
+	"type": "module",
+	"dependencies": {
+		"@picocss/pico": "^1.5.10",
+		"@prisma/client": "^5.6.0",
+		"@trpc/client": "^10.44.1",
+		"@trpc/server": "^10.44.1",
+		"axios": "^1.6.2",
+		"cheerio": "^1.0.0-rc.12",
+		"database": "*",
+		"websoc": "*",
+		"zod": "^3.22.4"
+	}
+}

@@ -1,4 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from 'database';
 
 const prisma = new PrismaClient();
+
 export default prisma;

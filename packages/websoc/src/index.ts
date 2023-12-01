@@ -1,9 +1,7 @@
-import axios from 'axios';
 import prisma from './prisma';
 import { z } from 'zod';
-import * as cheerio from 'cheerio';
 
-const WEBSOC_URL = 'https://www.reg.uci.edu/perl/WebSoc';
+export const WEBSOC_URL = 'https://www.reg.uci.edu/perl/WebSoc';
 
 export const course = z.object({
   Dept: z.string(),
@@ -27,6 +25,10 @@ const term = z.object({
 });
 
 type Term = z.infer<typeof term>;
+
+export function termToString(term: Term) {
+  return `${term.year}-${term.quarter.valueOf()}`;
+}
 
 export function formatTermReadable(term: string) {
   const [year, quarter] = term.split('-');
@@ -75,7 +77,7 @@ function getPreviousTerm(term: Term): Term {
   }
 }
 
-function getLatestTerm(date: Date): Term {
+export function getLatestTerm(date: Date): Term {
   const month = date.getMonth();
   const year = date.getFullYear();
 
@@ -95,50 +97,15 @@ function getLatestTerm(date: Date): Term {
 }
 
 export async function getSyllabi(course: Course) {
-  const { Dept, CourseNum } = course;
-  const syllabi = await prisma.syllabi.findFirst({
+  return await prisma.syllabi.findMany({
     where: {
-      dept: Dept,
-      courseNum: CourseNum
-    }
+      courseid: course.Dept + course.CourseNum
+    },
+    orderBy: [{
+      term: 'desc',
+    },
+    {
+      instructors: 'asc'
+    }]
   });
-
-  if (syllabi === null) {
-    // fetch then cache
-    return;
-  }
-
-  // remove old terms from db, keep only past year
-  // for (const term of syllabi.terms) {
-  //     if (term.term === Quarter.FALL) {
-  //         return;
-  //     }
-  // }
-  return syllabi;
-}
-
-async function scrapeSyllabi(course: Course) {
-  // todo: get relevant terms
-  const data = getWebSocData(course, '2019-03');
-  const $ = cheerio.load(data);
-  // todo: scrape syllabi
-}
-
-export async function getWebSocData(course: Course, term: string) {
-  const response = await axios.get(WEBSOC_URL, {
-    params: {
-      ...course,
-      YearTerm: term,
-      ShowComments: 'on',
-      ShowFinals: 'on',
-      Breadth: 'ANY',
-      Division: 'ANY',
-      ClassType: 'ALL',
-      FullCourses: 'ANY',
-      CancelledCourses: 'Exclude',
-      Submit: 'Display Web Results'
-    }
-  });
-
-  return response.data;
 }

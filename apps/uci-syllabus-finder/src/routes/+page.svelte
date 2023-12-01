@@ -1,12 +1,12 @@
 <script lang="ts">
   import trpc from '$lib/trpc';
-  import { formatTermReadable } from '$lib/websoc.js';
-  import type { syllabi } from '@prisma/client';
+  import { formatTermReadable } from 'websoc';
+  import type { syllabi as Syllabus } from '@prisma/client';
   import { onMount } from 'svelte';
 
   export let data;
 
-  let syllabi: syllabi | undefined;
+  let syllabi: Syllabus[] | undefined;
 
   let Dept = data.searchParams?.Dept ?? '';
   let CourseNum = data.searchParams?.CourseNum ?? '';
@@ -43,18 +43,17 @@
         </tr>
       </thead>
       <tbody>
-        {#each syllabi.terms as term}
+        {#each syllabi as syllabus}
           <tr>
-            <td rowspan={term.instructors.length}>{formatTermReadable(term.term)}</td>
-            <td>{term.instructors[0].instructor}</td>
-            <td><a href={term.instructors[0].syllabus}>Syllabus</a></td>
+            <td>{formatTermReadable(syllabus.term)}</td>
+            <td>
+              {#each syllabus.instructors.split(';') as instructor}
+                {instructor}
+                <br>
+              {/each}
+            </td>
+            <td><a href={syllabus.link}>Syllabus</a></td>
           </tr>
-          {#each term.instructors.splice(1) as instructor}
-            <tr>
-              <td>{instructor.instructor}</td>
-              <td><a href={instructor.syllabus}>Syllabus</a></td>
-            </tr>
-          {/each}
         {/each}
       </tbody>
     </table>
