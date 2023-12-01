@@ -3,7 +3,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^db:generate"],
-      "outputs": ["dist/**"]
+      "outputs": [".svelte-kit/**", ".vercel/**"]
     },
     "deploy": {
       "dependsOn": ["build", "test", "lint"]
