@@ -1,5 +1,5 @@
 {
-	"name": "uci-syllabus-finder",
+	"name": "web",
 	"version": "0.0.1",
 	"scripts": {
 		"postinstall": "prisma generate",
