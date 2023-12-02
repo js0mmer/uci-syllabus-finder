@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from 'vitest';
 import { parseCourseId, parseInstructors } from '../syllabi';
 import { load } from 'cheerio';
 import fs from 'fs';
