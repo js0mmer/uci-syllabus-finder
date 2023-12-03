@@ -22,6 +22,9 @@
     },
     "scrapers:test": {
       "cache": false
+    },
+    "preview": {
+      "cache": false
     }
   }
 }

@@ -3,15 +3,13 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "target": "es2020",
-    "module": "CommonJS",
-    "moduleResolution": "Node",
+    "module": "commonjs",
+    "moduleResolution": "node",
     "preserveWatchOutput": true,
     "skipLibCheck": true,
     "noEmit": true,
     "strict": true,
     "outDir": "dist",
-    "lib": ["es2020"]
   },
   "ts-node": {
     "esm": true

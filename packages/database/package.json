@@ -5,8 +5,7 @@
   "types": "./index.ts",
   "scripts": {
     "db:generate": "prisma generate",
-    "db:pull": "prisma db pull",
-    "postinstall": "npm run db:generate"
+    "db:pull": "prisma db pull"
   },
   "devDependencies": {
     "prisma": "^5.6.0"

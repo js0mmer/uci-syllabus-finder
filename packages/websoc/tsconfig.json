@@ -3,13 +3,13 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "target": "ESNext",
-    "module": "CommonJS",
-    "moduleResolution": "Node",
+    "module": "commonjS",
+    "moduleResolution": "node",
     "preserveWatchOutput": true,
     "skipLibCheck": true,
     "noEmit": true,
     "strict": true
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "include": ["src"]
 }

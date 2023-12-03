@@ -1,5 +1,7 @@
-import prisma from './prisma';
+import { PrismaClient } from 'database';
 import { z } from 'zod';
+
+const prisma = new PrismaClient();
 
 export const WEBSOC_URL = 'https://www.reg.uci.edu/perl/WebSoc';
 
