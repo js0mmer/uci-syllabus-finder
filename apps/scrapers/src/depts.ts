@@ -1,13 +1,12 @@
-import prisma from "./prisma";
-import axios from "axios";
-import * as cheerio from "cheerio";
+import axios from 'axios';
+import * as cheerio from 'cheerio';
+import { db } from './drizzle';
+import { depts } from 'database/schema';
 
 export async function handler() {
-  const depts = await scrapeDepts();
-  await prisma.depts.deleteMany();
-  await prisma.depts.createMany({
-    data: depts.map(dept => ({ dept }))
-  });
+  const deptsArr = await scrapeDepts();
+  await db.delete(depts);
+  await db.insert(depts).values(deptsArr.map((dept) => ({ dept })));
 }
 
 async function scrapeDepts() {
@@ -15,17 +14,19 @@ async function scrapeDepts() {
   const $ = cheerio.load(data);
   const depts: string[] = [];
 
-  $('select[name="Dept"]').children().each((i, elem) => {
-    // skip first option tag b/c it's all departments option
-    if (i != 0 && !isDeptInactive($(elem).text())) {
-      const dept = $(elem).attr('value');
-      if (dept) {
-        depts.push(dept);
-      } else {
-        console.error(`Dept ${$(elem).text()} has no value on option tag`);
+  $('select[name="Dept"]')
+    .children()
+    .each((i, elem) => {
+      // skip first option tag b/c it's all departments option
+      if (i != 0 && !isDeptInactive($(elem).text())) {
+        const dept = $(elem).attr('value');
+        if (dept) {
+          depts.push(dept);
+        } else {
+          console.error(`Dept ${$(elem).text()} has no value on option tag`);
+        }
       }
-    }
-  });
+    });
 
   return depts;
 }

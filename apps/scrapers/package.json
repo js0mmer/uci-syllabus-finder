@@ -16,8 +16,8 @@
     "vitest": "^0.34.6"
   },
   "dependencies": {
-    "database": "*",
+    "database": "workspace:*",
     "typescript": "^5.3.2",
-    "websoc": "*"
+    "websoc": "workspace:*"
   }
 }

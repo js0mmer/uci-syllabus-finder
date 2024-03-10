@@ -1,2 +1,2 @@
-import { handler } from "./syllabi";
+import { handler } from './syllabi';
 handler();

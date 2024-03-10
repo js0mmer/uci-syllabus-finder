@@ -1,8 +1,7 @@
 <script lang="ts">
-  import trpc from '$lib/trpc';
   import { formatTermReadable } from 'websoc';
-  import type { syllabi as Syllabus } from '@prisma/client';
   import { onMount } from 'svelte';
+  import type { Syllabus } from 'database/schema.js';
 
   export let data;
 
@@ -12,13 +11,14 @@
   let CourseNum = data.searchParams?.CourseNum ?? '';
 
   async function search() {
-    window.history.pushState({}, '', `/?Dept=${Dept}&CourseNum=${CourseNum}`);
-    syllabi = await trpc.search.query({ Dept, CourseNum });
+    const params = new URLSearchParams({ Dept, CourseNum });
+    window.history.pushState({}, '', `/?${params}`);
+    syllabi = await fetch(`/api/syllabi?${params}`).then((res) => res.json());
   }
 
   onMount(async () => {
     if (Dept && CourseNum) {
-      syllabi = await trpc.search.query({ Dept, CourseNum });
+      search();
     }
   });
 </script>
@@ -49,7 +49,7 @@
             <td>
               {#each syllabus.instructors.split(';') as instructor}
                 {instructor}
-                <br>
+                <br />
               {/each}
             </td>
             <td><a href={syllabus.link}>Syllabus</a></td>

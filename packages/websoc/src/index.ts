@@ -1,16 +1,12 @@
-import { PrismaClient } from 'database';
-import { z } from 'zod';
-
-const prisma = new PrismaClient();
+import { dbClient, desc, asc, eq } from 'database';
+import { syllabi } from 'database/schema';
 
 export const WEBSOC_URL = 'https://www.reg.uci.edu/perl/WebSoc';
 
-export const course = z.object({
-  Dept: z.string(),
-  CourseNum: z.string()
-});
-
-export type Course = z.infer<typeof course>;
+export interface Course {
+  Dept: string;
+  CourseNum: string;
+}
 
 enum Quarter {
   FALL = '92',
@@ -21,12 +17,10 @@ enum Quarter {
   SUMMER2 = '76'
 }
 
-const term = z.object({
-  year: z.number(),
-  quarter: z.nativeEnum(Quarter)
-});
-
-type Term = z.infer<typeof term>;
+export interface Term {
+  year: number;
+  quarter: Quarter;
+}
 
 export function termToString(term: Term) {
   return `${term.year}-${term.quarter.valueOf()}`;
@@ -46,38 +40,38 @@ export function formatTermReadable(term: string) {
   return `${year} ${quarterName}`;
 }
 
-function getRelevantTerms(): Term[] {
-  const today = new Date();
-  const latestTerm = getLatestTerm(today);
-  const relevantTerms = [latestTerm];
+// function getRelevantTerms(): Term[] {
+//   const today = new Date();
+//   const latestTerm = getLatestTerm(today);
+//   const relevantTerms = [latestTerm];
 
-  for (let i = 1; i < Object.keys(Quarter).length; i++) {
-    const sucessiveTerm = relevantTerms[i - 1];
-    relevantTerms.push(getPreviousTerm(sucessiveTerm));
-  }
+//   for (let i = 1; i < Object.keys(Quarter).length; i++) {
+//     const sucessiveTerm = relevantTerms[i - 1];
+//     relevantTerms.push(getPreviousTerm(sucessiveTerm));
+//   }
 
-  return relevantTerms;
-}
+//   return relevantTerms;
+// }
 
-function getPreviousTerm(term: Term): Term {
-  const { year, quarter } = term;
+// function getPreviousTerm(term: Term): Term {
+//   const { year, quarter } = term;
 
-  if (quarter === Quarter.FALL) {
-    return { year, quarter: Quarter.SUMMER2 };
-  } else if (quarter === Quarter.SUMMER2) {
-    return { year, quarter: Quarter.SUMMER10WK };
-  } else if (quarter === Quarter.SUMMER10WK) {
-    return { year, quarter: Quarter.SUMMER };
-  } else if (quarter === Quarter.SUMMER) {
-    return { year, quarter: Quarter.SPRING };
-  } else if (quarter === Quarter.SPRING) {
-    return { year, quarter: Quarter.WINTER };
-  } else if (quarter === Quarter.WINTER) {
-    return { year: year - 1, quarter: Quarter.FALL };
-  } else {
-    throw new Error('Invalid quarter');
-  }
-}
+//   if (quarter === Quarter.FALL) {
+//     return { year, quarter: Quarter.SUMMER2 };
+//   } else if (quarter === Quarter.SUMMER2) {
+//     return { year, quarter: Quarter.SUMMER10WK };
+//   } else if (quarter === Quarter.SUMMER10WK) {
+//     return { year, quarter: Quarter.SUMMER };
+//   } else if (quarter === Quarter.SUMMER) {
+//     return { year, quarter: Quarter.SPRING };
+//   } else if (quarter === Quarter.SPRING) {
+//     return { year, quarter: Quarter.WINTER };
+//   } else if (quarter === Quarter.WINTER) {
+//     return { year: year - 1, quarter: Quarter.FALL };
+//   } else {
+//     throw new Error('Invalid quarter');
+//   }
+// }
 
 export function getLatestTerm(date: Date): Term {
   const month = date.getMonth();
@@ -98,16 +92,10 @@ export function getLatestTerm(date: Date): Term {
   }
 }
 
-export async function getSyllabi(course: Course) {
-  return await prisma.syllabi.findMany({
-    where: {
-      courseid: course.Dept + course.CourseNum
-    },
-    orderBy: [{
-      term: 'desc',
-    },
-    {
-      instructors: 'asc'
-    }]
-  });
+export async function getSyllabi(db: ReturnType<typeof dbClient>, course: Course) {
+  return await db
+    .select()
+    .from(syllabi)
+    .where(eq(syllabi.courseid, `${course.Dept}${course.CourseNum}`))
+    .orderBy(desc(syllabi.term), asc(syllabi.instructors));
 }

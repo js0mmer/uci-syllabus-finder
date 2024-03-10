@@ -1,8 +1,8 @@
 import * as cheerio from 'cheerio';
 import { WEBSOC_URL, getLatestTerm, termToString } from 'websoc';
 import axios from 'axios';
-import type { syllabi } from '@prisma/client';
-import prisma from './prisma';
+import { db } from './drizzle';
+import { Syllabus, syllabi } from 'database/schema';
 
 const NUM_COLS_COURSE = 16;
 const INSTRUCTOR_COLUMN_INDEX = 4;
@@ -12,12 +12,11 @@ export async function handler() {
   const term = termToString(getLatestTerm(new Date()));
   const depts = await getDepts();
   for (const dept of depts) {
-    const syllabi = await scrapeSyllabi(dept, term);
-    await prisma.syllabi.createMany({
-      data: syllabi,
-      skipDuplicates: true
-    });
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 4.0 + 1) );
+    const syllabiArr = await scrapeSyllabi(dept, term);
+    await db.insert(syllabi).values(syllabiArr).onConflictDoNothing();
+    await new Promise((resolve) =>
+      setTimeout(resolve, Math.random() * 4.0 + 1)
+    );
   }
 
   // cleanUpOldSyllabi();
@@ -32,7 +31,7 @@ async function scrapeSyllabi(dept: string, term: string) {
   const $ = cheerio.load(await data);
   let courseId: string;
 
-  const syllabi: syllabi[] = [];
+  const syllabi: Syllabus[] = [];
 
   $('tr').each((_, elem) => {
     const cells = elem.children;
@@ -44,8 +43,10 @@ async function scrapeSyllabi(dept: string, term: string) {
       // if tr is a course offering
       const link = $(cells[WEB_COLUMN_INDEX]).find('a').attr('href');
       if (link) {
-        const instructors = parseInstructors($(cells[INSTRUCTOR_COLUMN_INDEX]).html() ?? '');
-        const syllabus: syllabi = {
+        const instructors = parseInstructors(
+          $(cells[INSTRUCTOR_COLUMN_INDEX]).html() ?? ''
+        );
+        const syllabus: Syllabus = {
           courseid: courseId,
           term,
           instructors,
@@ -60,7 +61,7 @@ async function scrapeSyllabi(dept: string, term: string) {
 }
 
 async function getDepts() {
-  const depts = await prisma.depts.findMany();
+  const depts = await db.query.depts.findMany();
   return depts.map((dept) => dept.dept);
 }
 

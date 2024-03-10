@@ -1,2 +1,2 @@
-import { handler } from "./depts";
+import { handler } from './depts';
 handler();
