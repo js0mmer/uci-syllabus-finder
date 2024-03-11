@@ -1,7 +1,12 @@
 import * as cheerio from 'cheerio';
-import { WEBSOC_URL, getLatestTerm, termToString } from 'websoc';
+import {
+  WEBSOC_URL,
+  formatTermReadable,
+  getRelevantTerms,
+  termToString
+} from 'websoc';
 import axios from 'axios';
-import { db } from './drizzle';
+import { db, not, inArray } from './drizzle';
 import { Syllabus, syllabi } from 'database/schema';
 
 const NUM_COLS_COURSE = 16;
@@ -9,22 +14,34 @@ const INSTRUCTOR_COLUMN_INDEX = 4;
 const WEB_COLUMN_INDEX = 14;
 
 export async function handler() {
-  const term = termToString(getLatestTerm(new Date()));
+  await deleteOldSyllabi();
+
   const depts = await getDepts();
-  for (const dept of depts) {
-    const syllabiArr = await scrapeSyllabi(dept, term);
-    await db.insert(syllabi).values(syllabiArr).onConflictDoNothing();
-    await new Promise((resolve) =>
-      setTimeout(resolve, Math.random() * 4.0 + 1)
+  for (const term of getRelevantTerms().slice(-1)) {
+    console.log(
+      `Scraping syllabi for ${formatTermReadable(termToString(term))}`
     );
+    for (const dept of depts) {
+      console.log(`- ${dept}`);
+      const syllabiArr = await scrapeSyllabi(dept, termToString(term));
+      if (syllabiArr.length > 0) {
+        await db.insert(syllabi).values(syllabiArr).onConflictDoNothing();
+      }
+      await new Promise((resolve) => {
+        const waitTime = Math.random() * 4000.0 + 1000;
+        console.log(`Waiting ${waitTime} ms`);
+        setTimeout(resolve, waitTime);
+      });
+    }
   }
 
-  // cleanUpOldSyllabi();
+  console.log('Done');
 }
 
-// function cleanUpOldSyllabi() {
-
-// }
+async function deleteOldSyllabi() {
+  const terms = getRelevantTerms().map(termToString);
+  await db.delete(syllabi).where(not(inArray(syllabi.term, terms)));
+}
 
 async function scrapeSyllabi(dept: string, term: string) {
   const data = getWebSocData(dept, term);
@@ -78,8 +95,6 @@ export async function getWebSocData(dept: string, term: string) {
     params: {
       Dept: dept,
       YearTerm: term,
-      ShowComments: 'on',
-      ShowFinals: 'on',
       Breadth: 'ANY',
       Division: 'ANY',
       ClassType: 'ALL',

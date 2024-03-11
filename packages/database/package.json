@@ -5,7 +5,8 @@
   "types": "./index.ts",
   "scripts": {},
   "devDependencies": {
-    "drizzle-kit": "^0.20.14"
+    "drizzle-kit": "^0.20.14",
+    "pg": "^8.11.3"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.0",

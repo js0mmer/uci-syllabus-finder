@@ -40,38 +40,42 @@ export function formatTermReadable(term: string) {
   return `${year} ${quarterName}`;
 }
 
-// function getRelevantTerms(): Term[] {
-//   const today = new Date();
-//   const latestTerm = getLatestTerm(today);
-//   const relevantTerms = [latestTerm];
+/**
+ * up to 2 previous terms
+ * @returns 
+ */
+export function getRelevantTerms(): Term[] {
+  const today = new Date();
+  const latestTerm = getLatestTerm(today);
+  const relevantTerms = [latestTerm];
 
-//   for (let i = 1; i < Object.keys(Quarter).length; i++) {
-//     const sucessiveTerm = relevantTerms[i - 1];
-//     relevantTerms.push(getPreviousTerm(sucessiveTerm));
-//   }
+  for (let i = 1; i < 2; i++) {
+    const sucessiveTerm = relevantTerms[i - 1];
+    relevantTerms.push(getPreviousTerm(sucessiveTerm));
+  }
 
-//   return relevantTerms;
-// }
+  return relevantTerms;
+}
 
-// function getPreviousTerm(term: Term): Term {
-//   const { year, quarter } = term;
+function getPreviousTerm(term: Term): Term {
+  const { year, quarter } = term;
 
-//   if (quarter === Quarter.FALL) {
-//     return { year, quarter: Quarter.SUMMER2 };
-//   } else if (quarter === Quarter.SUMMER2) {
-//     return { year, quarter: Quarter.SUMMER10WK };
-//   } else if (quarter === Quarter.SUMMER10WK) {
-//     return { year, quarter: Quarter.SUMMER };
-//   } else if (quarter === Quarter.SUMMER) {
-//     return { year, quarter: Quarter.SPRING };
-//   } else if (quarter === Quarter.SPRING) {
-//     return { year, quarter: Quarter.WINTER };
-//   } else if (quarter === Quarter.WINTER) {
-//     return { year: year - 1, quarter: Quarter.FALL };
-//   } else {
-//     throw new Error('Invalid quarter');
-//   }
-// }
+  if (quarter === Quarter.FALL) {
+    return { year, quarter: Quarter.SUMMER2 };
+  } else if (quarter === Quarter.SUMMER2) {
+    return { year, quarter: Quarter.SUMMER10WK };
+  } else if (quarter === Quarter.SUMMER10WK) {
+    return { year, quarter: Quarter.SUMMER };
+  } else if (quarter === Quarter.SUMMER) {
+    return { year, quarter: Quarter.SPRING };
+  } else if (quarter === Quarter.SPRING) {
+    return { year, quarter: Quarter.WINTER };
+  } else if (quarter === Quarter.WINTER) {
+    return { year: year - 1, quarter: Quarter.FALL };
+  } else {
+    throw new Error('Invalid quarter');
+  }
+}
 
 export function getLatestTerm(date: Date): Term {
   const month = date.getMonth();
