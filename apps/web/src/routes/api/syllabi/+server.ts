@@ -5,8 +5,8 @@ import { getSyllabi } from 'websoc';
 export const GET: RequestHandler = async ({ url }) => {
   const { searchParams } = url;
 
-  const Dept = searchParams.get('Dept')!;
-  const CourseNum = searchParams.get('CourseNum')!;
+  const Dept = searchParams.get('Dept')!.toUpperCase();
+  const CourseNum = searchParams.get('CourseNum')!.toUpperCase();
 
   const syllabi = await getSyllabi(db, { Dept, CourseNum });
 
