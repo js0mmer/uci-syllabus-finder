@@ -32,5 +32,5 @@ async function scrapeDepts() {
 }
 
 export function isDeptInactive(optionText: string) {
-  return optionText.match(/\(until \d\d\d\d \w+\)/g) !== null;
+  return optionText.match(/\(until \d{4} \w+\)/g) !== null;
 }
