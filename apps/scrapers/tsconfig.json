@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "noEmit": true,
     "strict": true,
-    "outDir": "dist",
+    "outDir": "dist"
   },
   "ts-node": {
     "esm": true

@@ -42,7 +42,7 @@ export function formatTermReadable(term: string) {
 
 /**
  * up to 2 previous terms
- * @returns 
+ * @returns
  */
 export function getRelevantTerms(): Term[] {
   const today = new Date();
@@ -96,7 +96,10 @@ export function getLatestTerm(date: Date): Term {
   }
 }
 
-export async function getSyllabi(db: ReturnType<typeof dbClient>, course: Course) {
+export async function getSyllabi(
+  db: ReturnType<typeof dbClient>,
+  course: Course
+) {
   return await db
     .select()
     .from(syllabi)

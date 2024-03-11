@@ -1,13 +1,9 @@
-
 /** @type { import("eslint").Linter.Config } */
 const config = {
-	root: true,
-	extends: [
-    'eslint:recommended',
-		'plugin:@typescript-eslint/recommended'
-  ],
-	parser: '@typescript-eslint/parser',
-	plugins: ['@typescript-eslint'],
+  root: true,
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
   env: {
     node: true
   },

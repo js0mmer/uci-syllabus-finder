@@ -1,8 +1,7 @@
 {
   "name": "uci-syllabus-finder-monorepo",
   "version": "1.0.0",
-  "scripts": {
-  },
+  "scripts": {},
   "devDependencies": {
     "prettier": "^3.1.0",
     "typescript": "^5.3.2"
