@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { db } from './drizzle';
 import { depts } from 'database/schema';
+import { WEBSOC_URL } from 'websoc';
 
 export async function handler() {
   const deptsArr = await scrapeDepts();
@@ -10,7 +11,7 @@ export async function handler() {
 }
 
 async function scrapeDepts() {
-  const data = (await axios.get('https://www.reg.uci.edu/perl/WebSoc')).data;
+  const data = (await axios.get(WEBSOC_URL)).data;
   const $ = cheerio.load(data);
   const depts: string[] = [];
 
