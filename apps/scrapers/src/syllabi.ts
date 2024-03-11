@@ -2,6 +2,7 @@ import * as cheerio from 'cheerio';
 import {
   WEBSOC_URL,
   formatTermReadable,
+  getLatestTerm,
   getRelevantTerms,
   termToString
 } from 'websoc';
@@ -17,22 +18,19 @@ export async function handler() {
   await deleteOldSyllabi();
 
   const depts = await getDepts();
-  for (const term of getRelevantTerms().slice(-1)) {
-    console.log(
-      `Scraping syllabi for ${formatTermReadable(termToString(term))}`
-    );
-    for (const dept of depts) {
-      console.log(`- ${dept}`);
-      const syllabiArr = await scrapeSyllabi(dept, termToString(term));
-      if (syllabiArr.length > 0) {
-        await db.insert(syllabi).values(syllabiArr).onConflictDoNothing();
-      }
-      await new Promise((resolve) => {
-        const waitTime = Math.random() * 4000.0 + 1000;
-        console.log(`Waiting ${waitTime} ms`);
-        setTimeout(resolve, waitTime);
-      });
+  const term = getLatestTerm(new Date());
+  console.log(`Scraping syllabi for ${formatTermReadable(termToString(term))}`);
+  for (const dept of depts) {
+    console.log(`- ${dept}`);
+    const syllabiArr = await scrapeSyllabi(dept, termToString(term));
+    if (syllabiArr.length > 0) {
+      await db.insert(syllabi).values(syllabiArr).onConflictDoNothing();
     }
+    await new Promise((resolve) => {
+      const waitTime = Math.random() * 4000.0 + 1000;
+      console.log(`Waiting ${waitTime} ms`);
+      setTimeout(resolve, waitTime);
+    });
   }
 
   console.log('Done');
