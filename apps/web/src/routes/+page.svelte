@@ -58,7 +58,7 @@
                 <br />
               {/each}
             </td>
-            <td><a href={syllabus.link}>Syllabus</a></td>
+            <td><a href={syllabus.link} target="_blank">Syllabus</a></td>
           </tr>
         {:else}
           <tr>
