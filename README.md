@@ -1,3 +1,3 @@
 # uci-syllabus-finder
 
-Proof of concept syllabus scraper.
+Proof of concept syllabus scraper/search site.
