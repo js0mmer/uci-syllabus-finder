@@ -21,6 +21,12 @@
       search();
     }
   });
+
+  function keyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      search();
+    }
+  }
 </script>
 
 <svelte:head>
@@ -31,9 +37,9 @@
 <main class="container">
   <label for="Dept">Search for a course</label>
   <input type="text" id="Dept" name="Dept" placeholder="Department" bind:value={Dept} />
-  <input type="text" name="CourseNum" placeholder="Course Number" bind:value={CourseNum} />
+  <input type="text" name="CourseNum" placeholder="Course Number" bind:value={CourseNum} on:keydown={keyDown} />
   <button on:click={search}>Search</button>
-  {#if syllabi}
+  {#if syllabi !== undefined}
     <table>
       <thead>
         <tr>
@@ -53,6 +59,10 @@
               {/each}
             </td>
             <td><a href={syllabus.link}>Syllabus</a></td>
+          </tr>
+        {:else}
+          <tr>
+            <td colspan="3">No results found</td>
           </tr>
         {/each}
       </tbody>
