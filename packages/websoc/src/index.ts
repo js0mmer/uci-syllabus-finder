@@ -1,5 +1,5 @@
-import { dbClient, desc, asc, eq } from 'database';
-import { syllabus } from 'database/schema';
+import { dbClient, desc, asc, eq } from '@uci-syllabus-finder/database';
+import { syllabus } from '@uci-syllabus-finder/database/schema';
 
 export const WEBSOC_URL = 'https://www.reg.uci.edu/perl/WebSoc';
 

@@ -5,7 +5,7 @@ import {
   getLatestTerm,
   getRelevantTerms,
   termToString
-} from 'websoc';
+} from '@uci-syllabus-finder/websoc';
 import axios from 'axios';
 import { db, not, inArray } from './drizzle';
 import { Syllabus, syllabus } from '@uci-syllabus-finder/database/schema';

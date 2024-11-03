@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { formatTermReadable } from 'websoc';
+  import { formatTermReadable } from '@uci-syllabus-finder/websoc';
   import { onMount } from 'svelte';
-  import type { Syllabus } from 'database/schema.js';
+  import type { Syllabus } from '@uci-syllabus-finder/database/schema';
 
   export let data;
 
@@ -37,7 +37,13 @@
 <main class="container">
   <label for="Dept">Search for a course</label>
   <input type="text" id="Dept" name="Dept" placeholder="Department" bind:value={Dept} />
-  <input type="text" name="CourseNum" placeholder="Course Number" bind:value={CourseNum} on:keydown={keyDown} />
+  <input
+    type="text"
+    name="CourseNum"
+    placeholder="Course Number"
+    bind:value={CourseNum}
+    on:keydown={keyDown}
+  />
   <button on:click={search}>Search</button>
   {#if syllabi !== undefined}
     <table>

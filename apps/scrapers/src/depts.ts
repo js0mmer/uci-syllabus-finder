@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { db } from './drizzle';
-import { dept } from 'database/schema';
+import { dept } from '@uci-syllabus-finder/database/schema';
 import { WEBSOC_URL } from '@uci-syllabus-finder/websoc';
 
 export async function handler() {
