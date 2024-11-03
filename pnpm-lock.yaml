@@ -125,9 +125,6 @@ importers:
 
   packages/websoc:
     dependencies:
-      '@uci-syllabus-finder/database':
-        specifier: workspace:*
-        version: link:../database
       typescript:
         specifier: ^5.3.2
         version: 5.4.2

@@ -1,6 +1,3 @@
-import { dbClient, desc, asc, eq } from '@uci-syllabus-finder/database';
-import { syllabus } from '@uci-syllabus-finder/database/schema';
-
 export const WEBSOC_URL = 'https://www.reg.uci.edu/perl/WebSoc';
 
 export interface Course {
@@ -94,15 +91,4 @@ export function getLatestTerm(date: Date): Term {
   } else {
     return { year: year - 1, quarter: Quarter.FALL };
   }
-}
-
-export async function getSyllabi(
-  db: ReturnType<typeof dbClient>,
-  course: Course
-) {
-  return await db
-    .select()
-    .from(syllabus)
-    .where(eq(syllabus.courseId, `${course.Dept}${course.CourseNum}`))
-    .orderBy(desc(syllabus.term), asc(syllabus.instructors));
 }
