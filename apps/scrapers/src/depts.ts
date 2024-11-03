@@ -1,13 +1,13 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { db } from './drizzle';
-import { depts } from 'database/schema';
+import { dept } from 'database/schema';
 import { WEBSOC_URL } from 'websoc';
 
 export async function handler() {
   const deptsArr = await scrapeDepts();
-  await db.delete(depts);
-  await db.insert(depts).values(deptsArr.map((dept) => ({ dept })));
+  await db.delete(dept);
+  await db.insert(dept).values(deptsArr.map((dept) => ({ dept })));
 }
 
 async function scrapeDepts() {

@@ -8,7 +8,7 @@ import {
 } from 'websoc';
 import axios from 'axios';
 import { db, not, inArray } from './drizzle';
-import { Syllabus, syllabi } from 'database/schema';
+import { Syllabus, syllabus } from 'database/schema';
 
 const NUM_COLS_COURSE = 16;
 const INSTRUCTOR_COLUMN_INDEX = 4;
@@ -24,7 +24,7 @@ export async function handler() {
     console.log(`- ${dept}`);
     const syllabiArr = await scrapeSyllabi(dept, termToString(term));
     if (syllabiArr.length > 0) {
-      await db.insert(syllabi).values(syllabiArr).onConflictDoNothing();
+      await db.insert(syllabus).values(syllabiArr).onConflictDoNothing();
     }
     await new Promise((resolve) => {
       const waitTime = Math.random() * 4000.0 + 1000;
@@ -38,7 +38,7 @@ export async function handler() {
 
 async function deleteOldSyllabi() {
   const terms = getRelevantTerms().map(termToString);
-  await db.delete(syllabi).where(not(inArray(syllabi.term, terms)));
+  await db.delete(syllabus).where(not(inArray(syllabus.term, terms)));
 }
 
 async function scrapeSyllabi(dept: string, term: string) {
@@ -62,10 +62,10 @@ async function scrapeSyllabi(dept: string, term: string) {
           $(cells[INSTRUCTOR_COLUMN_INDEX]).html() ?? ''
         );
         const syllabus: Syllabus = {
-          courseid: courseId,
+          courseId,
           term,
           instructors,
-          link: link
+          link
         };
         syllabi.push(syllabus);
       }
@@ -76,7 +76,7 @@ async function scrapeSyllabi(dept: string, term: string) {
 }
 
 async function getDepts() {
-  const depts = await db.query.depts.findMany();
+  const depts = await db.query.dept.findMany();
   return depts.map((dept) => dept.dept);
 }
 

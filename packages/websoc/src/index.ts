@@ -1,5 +1,5 @@
 import { dbClient, desc, asc, eq } from 'database';
-import { syllabi } from 'database/schema';
+import { syllabus } from 'database/schema';
 
 export const WEBSOC_URL = 'https://www.reg.uci.edu/perl/WebSoc';
 
@@ -102,7 +102,7 @@ export async function getSyllabi(
 ) {
   return await db
     .select()
-    .from(syllabi)
-    .where(eq(syllabi.courseid, `${course.Dept}${course.CourseNum}`))
-    .orderBy(desc(syllabi.term), asc(syllabi.instructors));
+    .from(syllabus)
+    .where(eq(syllabus.courseId, `${course.Dept}${course.CourseNum}`))
+    .orderBy(desc(syllabus.term), asc(syllabus.instructors));
 }

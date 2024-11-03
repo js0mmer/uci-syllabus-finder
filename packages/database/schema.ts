@@ -1,25 +1,23 @@
 import { InferInsertModel } from 'drizzle-orm';
-import { pgTable, index, varchar, char } from 'drizzle-orm/pg-core';
+import { index, pgTable, text } from 'drizzle-orm/pg-core';
 
-export const syllabi = pgTable(
-  'syllabi',
+export const syllabus = pgTable(
+  'syllabus',
   {
-    courseid: varchar('courseid', { length: 32 }).notNull(),
-    term: char('term', { length: 7 }).notNull(),
-    instructors: varchar('instructors', { length: 255 }).notNull(),
-    link: varchar('link', { length: 255 }).notNull()
+    courseId: text('course_id').notNull(),
+    term: text('term').notNull(),
+    instructors: text('instructors').notNull(),
+    link: text('link').notNull()
   },
-  (table) => {
-    return {
-      courseidindex: index('courseidindex').on(table.courseid)
-    };
-  }
+  (table) => ({
+    courseIdIndex: index('course_id_index').on(table.courseId)
+  })
 );
 
-export type Syllabus = InferInsertModel<typeof syllabi>;
+export type Syllabus = InferInsertModel<typeof syllabus>;
 
-export const depts = pgTable('depts', {
-  dept: varchar('dept', { length: 32 }).notNull()
+export const dept = pgTable('dept', {
+  dept: text('dept').notNull()
 });
 
-export type Dept = InferInsertModel<typeof depts>;
+export type Dept = InferInsertModel<typeof dept>;
