@@ -1,6 +1,6 @@
 import { db } from '$lib/drizzle';
 import { json, type RequestHandler } from '@sveltejs/kit';
-import { getSyllabi } from 'websoc';
+import { getSyllabi } from '@uci-syllabus-finder/websoc';
 
 export const GET: RequestHandler = async ({ url }) => {
   const { searchParams } = url;

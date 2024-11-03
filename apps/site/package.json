@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "@uci-syllabus-finder/site",
   "version": "0.0.1",
   "scripts": {
     "dev": "vite dev",
@@ -28,7 +28,7 @@
   "type": "module",
   "dependencies": {
     "@picocss/pico": "^1.5.10",
-    "database": "workspace:*",
-    "websoc": "workspace:*"
+    "@uci-syllabus-finder/database": "workspace:*",
+    "@uci-syllabus-finder/websoc": "workspace:*"
   }
 }

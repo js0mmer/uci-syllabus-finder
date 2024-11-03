@@ -1,5 +1,5 @@
 {
-  "name": "uci-syllabus-finder-monorepo",
+  "name": "uci-syllabus-finder",
   "version": "1.0.0",
   "scripts": {},
   "devDependencies": {

@@ -8,7 +8,7 @@ import {
 } from 'websoc';
 import axios from 'axios';
 import { db, not, inArray } from './drizzle';
-import { Syllabus, syllabus } from 'database/schema';
+import { Syllabus, syllabus } from '@uci-syllabus-finder/database/schema';
 
 const NUM_COLS_COURSE = 16;
 const INSTRUCTOR_COLUMN_INDEX = 4;

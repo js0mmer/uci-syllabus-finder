@@ -1,5 +1,5 @@
 {
-  "name": "scrapers",
+  "name": "@uci-syllabus-finder/scrapers",
   "version": "1.0.0",
   "scripts": {
     "scrapers:test": "vitest run",
@@ -16,9 +16,9 @@
     "vitest": "^0.34.6"
   },
   "dependencies": {
-    "database": "workspace:*",
+    "@uci-syllabus-finder/database": "workspace:*",
+    "@uci-syllabus-finder/websoc": "workspace:*",
     "dotenv": "^16.4.5",
-    "typescript": "^5.3.2",
-    "websoc": "workspace:*"
+    "typescript": "^5.3.2"
   }
 }
