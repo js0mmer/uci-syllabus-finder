@@ -1,4 +1,4 @@
-# uci-syllabus-finder
+# UCI Syllabus Finder
 
 A website to search through syllabi from past offerings of UCI courses.
 
