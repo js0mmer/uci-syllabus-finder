@@ -7,17 +7,16 @@
 
   let syllabi: Syllabus[] | undefined;
 
-  let Dept = data.searchParams?.Dept ?? '';
-  let CourseNum = data.searchParams?.CourseNum ?? '';
+  let query = data.searchParams?.query ?? '';
 
   async function search() {
-    const params = new URLSearchParams({ Dept, CourseNum });
+    const params = new URLSearchParams({ query });
     window.history.pushState({}, '', `/?${params}`);
     syllabi = await fetch(`/api/syllabi?${params}`).then((res) => res.json());
   }
 
-  onMount(async () => {
-    if (Dept && CourseNum) {
+  onMount(() => {
+    if (query) {
       search();
     }
   });
@@ -35,13 +34,13 @@
 </svelte:head>
 
 <main class="container">
-  <label for="Dept">Search for a course</label>
-  <input type="text" id="Dept" name="Dept" placeholder="Department" bind:value={Dept} />
+  <label for="query">Search for a course</label>
   <input
     type="text"
-    name="CourseNum"
-    placeholder="Course Number"
-    bind:value={CourseNum}
+    id="query"
+    name="Search"
+    placeholder="Search for a course"
+    bind:value={query}
     on:keydown={keyDown}
   />
   <button on:click={search}>Search</button>
@@ -49,6 +48,7 @@
     <table>
       <thead>
         <tr>
+          <th>Course</th>
           <th>Term</th>
           <th>Instructor</th>
           <th>Syllabus</th>
@@ -57,6 +57,7 @@
       <tbody>
         {#each syllabi as syllabus}
           <tr>
+            <td>{syllabus.courseId}</td>
             <td>{formatTermReadable(syllabus.term)}</td>
             <td>
               {#each syllabus.instructors.split(';') as instructor}

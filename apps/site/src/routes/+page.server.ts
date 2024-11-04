@@ -3,8 +3,7 @@ export async function load({ url }) {
 
   return {
     searchParams: {
-      Dept: searchParams.get('Dept'),
-      CourseNum: searchParams.get('CourseNum')
+      query: searchParams.get('query')
     }
   };
 }

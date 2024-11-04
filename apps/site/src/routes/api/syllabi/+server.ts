@@ -1,19 +1,20 @@
-import { asc, db, desc, eq } from '$lib/drizzle';
+import { asc, db, desc, lte, sql } from '$lib/drizzle';
 import { json, type RequestHandler } from '@sveltejs/kit';
 import { syllabus } from '@uci-syllabus-finder/database/schema';
 
+const levenshtein = sql`levenshtein_less_equal(${syllabus.courseId}, ${sql.placeholder('query')}, 3)`;
+const syllabusQuery = db
+  .select()
+  .from(syllabus)
+  .where(lte(levenshtein, 3))
+  .orderBy(asc(levenshtein), desc(syllabus.term), desc(syllabus.instructors))
+  .limit(50)
+  .prepare('query');
+
 export const GET: RequestHandler = async ({ url }) => {
   const { searchParams } = url;
-
-  const Dept = searchParams.get('Dept')!.toUpperCase();
-  const CourseNum = searchParams.get('CourseNum')!.toUpperCase();
-  const courseId = `${Dept}${CourseNum}`;
-
-  const syllabi = await db
-    .select()
-    .from(syllabus)
-    .where(eq(syllabus.courseId, courseId))
-    .orderBy(desc(syllabus.term), asc(syllabus.instructors));
+  const query = searchParams.get('query')!.toUpperCase();
+  const syllabi = await syllabusQuery.execute({ query });
 
   return json(syllabi);
 };
