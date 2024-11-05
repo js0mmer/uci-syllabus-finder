@@ -39,7 +39,7 @@
     type="text"
     id="query"
     name="Search"
-    placeholder="Search for a course"
+    placeholder="e.g. COMPSCI117"
     bind:value={query}
     on:keydown={keyDown}
   />
