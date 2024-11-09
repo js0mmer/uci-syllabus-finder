@@ -53,7 +53,7 @@ async function scrapeSyllabi(dept: string, term: string) {
     const courseTitle = $(elem).find('.CourseTitle');
     // if tr is a course title
     if (courseTitle.length > 0) {
-      courseId = parseCourseId($(courseTitle).text());
+      courseId = parseCourseId($(courseTitle).text(), dept);
     } else if (cells.length === NUM_COLS_COURSE) {
       // if tr is a course offering
       const link = $(cells[WEB_COLUMN_INDEX]).find('a').attr('href');
@@ -80,8 +80,8 @@ async function getDepts() {
   return depts.map((dept) => dept.dept);
 }
 
-export function parseCourseId(text: string) {
-  return text.split(/\s+/).slice(0, 3).join('').toUpperCase();
+export function parseCourseId(text: string, dept: string) {
+  return text.split(/\s+/).slice(0, dept.split(/\s+/).length + 2).join('').toUpperCase();
 }
 
 export function parseInstructors(html: string) {

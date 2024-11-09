@@ -9,9 +9,9 @@ describe('syllabi', () => {
     const data = fs.readFileSync('./sample-data/syllabi.html', 'utf8');
     const $ = load(data);
 
-    expect(parseCourseId($('.CourseTitle').first().text() ?? 'undefined')).toBe(
-      'COMPSCI112'
-    );
+    expect(
+      parseCourseId($('.CourseTitle').first().text() ?? 'undefined', 'COMPSCI')
+    ).toBe('COMPSCI112');
   });
   test('XU, P.;MAJUMDER,A. parsed', () => {
     const data = fs.readFileSync('./sample-data/instructor.html', 'utf8');
@@ -20,6 +20,9 @@ describe('syllabi', () => {
     expect(parseInstructors($('td').first().html() ?? 'null')).toBe(
       'XU, P.;MAJUMDER, A.'
     );
+  });
+  test('ACENG20A parsed', () => {
+    expect(parseCourseId('  Ac Eng   20A     ', 'AC ENG')).toBe('ACENG20A');
   });
 });
 
