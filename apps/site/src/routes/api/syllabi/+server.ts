@@ -13,7 +13,7 @@ const syllabusQuery = db
 
 export const GET: RequestHandler = async ({ url }) => {
   const { searchParams } = url;
-  const query = searchParams.get('query')!.toUpperCase();
+  const query = searchParams.get('query')!.toUpperCase().replace(/\s+/, '');
   const syllabi = await syllabusQuery.execute({ query });
 
   return json(syllabi);
