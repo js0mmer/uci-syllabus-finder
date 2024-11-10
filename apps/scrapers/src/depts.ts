@@ -1,16 +1,8 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import { db } from './drizzle';
-import { dept } from '@uci-syllabus-finder/database/schema';
 import { WEBSOC_URL } from '@uci-syllabus-finder/websoc';
 
-export async function handler() {
-  const deptsArr = await scrapeDepts();
-  await db.delete(dept);
-  await db.insert(dept).values(deptsArr.map((dept) => ({ dept })));
-}
-
-async function scrapeDepts() {
+export async function scrapeDepts() {
   const data = (await axios.get(WEBSOC_URL)).data;
   const $ = cheerio.load(data);
   const depts: string[] = [];

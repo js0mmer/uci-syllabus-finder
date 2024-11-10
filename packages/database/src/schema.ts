@@ -15,9 +15,3 @@ export const syllabus = pgTable(
 );
 
 export type Syllabus = InferInsertModel<typeof syllabus>;
-
-export const dept = pgTable('dept', {
-  dept: text('dept').notNull()
-});
-
-export type Dept = InferInsertModel<typeof dept>;

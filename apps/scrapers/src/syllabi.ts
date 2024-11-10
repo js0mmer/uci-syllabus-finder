@@ -9,31 +9,39 @@ import {
 import axios from 'axios';
 import { db, not, inArray } from './drizzle';
 import { Syllabus, syllabus } from '@uci-syllabus-finder/database/schema';
+import { scrapeDepts } from './depts';
 
-const NUM_COLS_COURSE = 16;
+const NUM_COLS_COURSE = 15; // or 16 (todo: investigate)
 const INSTRUCTOR_COLUMN_INDEX = 4;
-const WEB_COLUMN_INDEX = 14;
+const WEB_COLUMN_INDEX = 13; // or 14
 
 export async function handler() {
   await deleteOldSyllabi();
 
-  const depts = await getDepts();
+  const depts = await scrapeDepts();
+  console.log('Departments:', depts);
+  await wait();
   const term = getLatestTerm(new Date());
   console.log(`Scraping syllabi for ${formatTermReadable(termToString(term))}`);
   for (const dept of depts) {
     console.log(`- ${dept}`);
     const syllabiArr = await scrapeSyllabi(dept, termToString(term));
+    console.log(`- ${syllabiArr.length} syllabi`);
     if (syllabiArr.length > 0) {
       await db.insert(syllabus).values(syllabiArr).onConflictDoNothing();
     }
-    await new Promise((resolve) => {
-      const waitTime = Math.random() * 4000.0 + 1000;
-      console.log(`Waiting ${waitTime} ms`);
-      setTimeout(resolve, waitTime);
-    });
+    await wait();
   }
 
   console.log('Done');
+}
+
+async function wait() {
+  return new Promise((resolve) => {
+    const waitTime = Math.random() * 4000.0 + 1000;
+    console.log(`Waiting ${waitTime} ms`);
+    setTimeout(resolve, waitTime);
+  });
 }
 
 async function deleteOldSyllabi() {
@@ -75,13 +83,12 @@ async function scrapeSyllabi(dept: string, term: string) {
   return syllabi;
 }
 
-async function getDepts() {
-  const depts = await db.query.dept.findMany();
-  return depts.map((dept) => dept.dept);
-}
-
 export function parseCourseId(text: string, dept: string) {
-  return text.split(/\s+/).slice(0, dept.split(/\s+/).length + 2).join('').toUpperCase();
+  return text
+    .split(/\s+/)
+    .slice(0, dept.split(/\s/).length + 2)
+    .join('')
+    .toUpperCase();
 }
 
 export function parseInstructors(html: string) {
