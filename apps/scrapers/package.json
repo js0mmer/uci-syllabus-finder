@@ -18,6 +18,8 @@
   "dependencies": {
     "@uci-syllabus-finder/database": "workspace:*",
     "@uci-syllabus-finder/websoc": "workspace:*",
+    "axios": "^1.7.7",
+    "cheerio": "^1.0.0",
     "dotenv": "^16.4.5",
     "typescript": "^5.3.2"
   }
