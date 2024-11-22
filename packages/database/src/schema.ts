@@ -1,5 +1,5 @@
 import { InferInsertModel } from 'drizzle-orm';
-import { index, pgTable, text } from 'drizzle-orm/pg-core';
+import { pgTable, primaryKey, text } from 'drizzle-orm/pg-core';
 
 export const syllabus = pgTable(
   'syllabus',
@@ -9,9 +9,9 @@ export const syllabus = pgTable(
     instructors: text('instructors').notNull(),
     link: text('link').notNull()
   },
-  (table) => ({
-    courseIdIndex: index('course_id_index').on(table.courseId)
-  })
+  (table) => ([
+    primaryKey({ columns: [table.courseId, table.term, table.instructors]})
+  ])
 );
 
 export type Syllabus = InferInsertModel<typeof syllabus>;
