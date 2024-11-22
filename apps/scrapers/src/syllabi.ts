@@ -16,7 +16,7 @@ const INSTRUCTOR_COLUMN_INDEX = 4;
 const WEB_COLUMN_INDEX = 13; // or 14
 
 export async function handler() {
-  await deleteOldSyllabi();
+  // await deleteOldSyllabi();
 
   const depts = await scrapeDepts();
   console.log('Departments:', depts);
